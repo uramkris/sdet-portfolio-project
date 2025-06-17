@@ -31,7 +31,7 @@ jobs:
     - name: Run Pytest & create report
       run: |
         mkdir -p reports
-        pytest -v --html=reports/report.html --self-contained-html
+        pytest -v tests api --html=reports/report.html --self-contained-html
 
     - name: Upload HTML report
       if: always()                # runs even if tests fail
