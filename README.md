@@ -1,2 +1,2 @@
 # sdet-portfolio-project
-Portfolio project for SDET interview prep and automation practice
+Portfolio project for SDET interview prep and automation practice.
