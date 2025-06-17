@@ -11,35 +11,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Check out code
-      uses: actions/checkout@v4          # ← upgrade
+    - uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v5      # ← upgrade
+    - uses: actions/setup-python@v5
       with:
-        python-version: '3.9'
+        python-version: "3.9"
 
-    - name: Install Python dependencies
+    - name: Install Python deps
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Install Google Chrome
+    - name: Install Chromium
       run: |
-        wget -q -O /usr/share/keyrings/google-linux-signing-key.gpg \
-            https://dl.google.com/linux/linux_signing_key.gpg
-        echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-linux-signing-key.gpg] \
-            http://dl.google.com/linux/chrome/deb/ stable main" | \
-            sudo tee /etc/apt/sources.list.d/google-chrome.list
         sudo apt-get update
-        sudo apt-get -y install google-chrome-stable
+        sudo apt-get -y install chromium-browser
+      # On Ubuntu-latest this installs the Snap stub; Selenium still works.
 
-    - name: Run Pytest
-      run: pytest -v --html=reports/report.html --self-contained-html
+    - name: Run Pytest & create report
+      run: |
+        mkdir -p reports
+        pytest -v --html=reports/report.html --self-contained-html
 
-    - name: Upload report artifact
-      if: always()
-      uses: actions/upload-artifact@v4    # ← upgrade (required)
+    - name: Upload HTML report
+      if: always()                # runs even if tests fail
+      uses: actions/upload-artifact@v4
       with:
         name: test-execution-report
         path: reports/
