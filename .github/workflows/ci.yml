@@ -29,6 +29,8 @@ jobs:
       # On Ubuntu-latest this installs the Snap stub; Selenium still works.
 
     - name: Run Pytest & create report
+      env:
+        PYTHONPATH: ${{ github.workspace }}   # makes 'pages', 'config' importable
       run: |
         mkdir -p reports
         pytest -v tests api --html=reports/report.html --self-contained-html
